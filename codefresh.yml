@@ -92,7 +92,7 @@ steps:
             - APIAPP_FRONTENDURL=http://container_under_test:80/frontend
             - APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://localhost"
             - APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="http://localhost"
-            - APIAPP_OBJECTSTORECONFIG="{\\\"Type\\\":\\\"Memory\\\"}"
+            - APIAPP_OBJECTSTORECONFIG="{\"Type\":\"Memory\"}"
     composition_candidates:
       saas_user_management_systemtest:
         image: ${{build_the_test_image}}
