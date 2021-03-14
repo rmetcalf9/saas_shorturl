@@ -1,24 +1,11 @@
-# Template Repo
+# URL Shortner for my infrastructure
 
-I use templates for my personal projects with standard setup to connect to
-my personal app infrastructure.
+Twitter links my apps want to post are too long minaly due to embeded url's. I wanted to make a url shortner.
 
-This Template repo has a simple app with a flask python backend, a quasar frontend, docker image build and codefresh deployment.
-I have also extended it for with my standard Terraform setup.
+## Features
 
-## Usage
-
-Find and replace service name occurrences (templateservicename -> new name):
-
- - codefresh.yml
- - Dockerfile
- - run localbuild
- - frontend/saasClientAPI
- - terraform main
- - local_terraform
- - testContainer
-
-In codefresh.yml update the versions of build containers I use:
- - RJM_BUILDQUASARAPP_IMAGE
- - RJM_DOCKERWSCALLER_IMAGE
-
+ - A singleton listens to a queue and reserves short url's based on requests.
+ - url numbering system using allowed html chars to be as short as possible
+ - Query service to find the short url (may be in singleton or another container)
+ - State stored in object_store
+ - Bad word removed - in case generated url's have bad words
