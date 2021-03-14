@@ -12,3 +12,9 @@ Twitter links my apps want to post are too long minaly due to embeded url's. I w
  - not easiably guessable. You can not take one url and add one to get the next
  - constant length
  - short url's are expired after 365 days??
+
+
+
+## Paramter
+
+pad = random number between 0..550731775.
