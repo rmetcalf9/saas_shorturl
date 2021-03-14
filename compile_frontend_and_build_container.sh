@@ -23,17 +23,7 @@ if [ ${RES} -eq 0 ]; then
   fi
 fi
 
-docker run --rm --name docker_build_quasar_app --mount type=bind,source=${GITROOT}/frontend,target=/ext_volume ${QUASARBUILDIMAGE} -c "build_quasar_app /ext_volume ${QUASARBUILDMODE} \"local_build_${VERSIONNUM}\""
-RES=$?
-if [ ${RES} -ne 0 ]; then
-  exit 1
-fi
-
-if [ ! -d ${GITROOT}/frontend/dist/${QUASARBUILDMODE} ]; then
-  echo "ERROR - build command didn't create ${GITROOT}/frontend/dist/${QUASARBUILDMODE} directory"
-  cd ${GITROOT}
-  exit 1
-fi
+echo "There is no frontend for this service"
 
 echo "Build docker container (VERSIONNUM=${VERSIONNUM})"
 #This file does no version bumping

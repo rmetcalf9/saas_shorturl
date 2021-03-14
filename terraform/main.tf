@@ -11,8 +11,7 @@ module "saas_infra" {
   # include_main_public = false
   # include_main_private = false
 
-  # Testing and caused issus. The requests didn't seem to have a cookie.
-  # I need to debug. for now falling back to application security
+  # No private endpoint. URL's can only be created via MQ event
   secure_test_private = false
   secure_main_private = false
 

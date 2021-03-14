@@ -31,6 +31,7 @@ ENV APIAPP_MODE DOCKER
 
 EXPOSE 80
 
+# baseapp forces us to create the frontend directory of app will not load
 RUN apk add --no-cache bash python3 curl python3-dev build-base linux-headers pcre-dev libffi-dev openldap-dev libxml2 libxslt libxslt-dev libxml2-dev && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
@@ -49,7 +50,6 @@ RUN pip3 install lxml==4.5.2
 COPY ./services/src ${APP_DIR}
 RUN pip3 install -r ${APP_DIR}/requirements.txt
 
-COPY ./frontend/dist/pwa ${APIAPP_FRONTEND_FRONTEND}
 COPY ./VERSION /VERSION
 COPY ./services/run_app_docker.sh /run_app_docker.sh
 COPY ./nginx_default.conf /etc/nginx/conf.d/default.conf

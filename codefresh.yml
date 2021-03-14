@@ -51,13 +51,6 @@ steps:
       - pip3 install --no-cache-dir -r ./testContainer/requirements.txt
       - nosetests --rednose ./test
 
-  compile_frontend:
-    description: Compile the frontend quasar application
-    image: ${{RJM_BUILDQUASARAPP_IMAGE}}
-    working_directory: ${{main_clone}}
-    commands:
-      - build_quasar_app ./frontend pwa ${{RJM_VERSION}}
-
   build_the_image:
     working_directory: ${{main_clone}}
     type: build

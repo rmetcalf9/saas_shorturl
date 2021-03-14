@@ -68,7 +68,7 @@ if [ ${RES} -ne 0 ]; then
 fi
 
 echo "Complete"
-echo "Start from http://127.0.0.1:${CONTAINER_EXTPORT80}/public/web/frontend/#/"
+echo "No frontend - services are at http://127.0.0.1:${CONTAINER_EXTPORT80}/public/api/info/serverinfo "
 echo ""
 echo "End docker service rm ${RJM_RUNNING_SERVICE_NAME} to stop"
 echo ""
