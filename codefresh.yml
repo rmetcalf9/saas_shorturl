@@ -91,7 +91,7 @@ steps:
             - APIAPP_REDIRECTPREFIX="http://rjmd.uk"
             - APIAPP_URLEXPIREDAYS="366"
             - APIAPP_DESTWHITELIST="{\"challengeapp\":[\"https://challengewsipe.com/#/challengeapp/\"],\"challengeappstage\":[\"https://challengewsipe.com/#/challengeappstage/\"]}"
-   composition_candidates:
+    composition_candidates:
       saas_user_management_systemtest:
         image: ${{build_the_test_image}}
         command: /run_tests_with_wait.sh
