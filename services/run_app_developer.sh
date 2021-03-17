@@ -61,6 +61,11 @@ export APIAPP_PORT=8098
 export APIAPP_OBJECTSTORECONFIG="{\"Type\": \"SimpleFileStore\",\"BaseLocation\": \"./objectstoredata\"}"
 export APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="http://localhost:8080"
 
+# Shorturl spercific params
+export APIAPP_REDIRECTPREFIX="http://rjmd.uk"
+export APIAPP_URLEXPIREDAYS="366"
+export APIAPP_DESTWHITELIST="{\"challengeapp\":[\"https://challengewsipe.com/#/challengeapp/\"],\"challengeappstage\":[\"https://challengewsipe.com/#/challengeappstage/\"]}"
+
 export APIAPP_VERSION=
 if [ -f ${APP_DIR}/VERSION ]; then
   APIAPP_VERSION=${0}-$(cat ${APP_DIR}/VERSION)

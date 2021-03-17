@@ -17,9 +17,16 @@ charsToUseInURL = lowerCaseLetters + upperCaseLetters + numbers + specialchars
 #  always be able to fit the result in 5 chars (I will waste some combinations)
 MAXSOURCEINT = 2 ** 30
 
-
+# I will apply a onetimepad to each number. This just means that the mapping is a bit jumbled up but will not break
+#  the sequence in the results because the same one time pad is used mutiple times. To generate the pad:
+##from random import randrange
+##randrange(MAXSOURCEINT)
+PAD = 315521835
 
 # The system will use a secret 29 bit one time pad
+
+# Don't change this without going through all the logic above
+CODELENGTH = 5
 
 class OutOfRangeException(Exception):
   pass
@@ -27,29 +34,19 @@ class InvalidOneTimePadException(Exception):
   pass
 
 class ShortCodeGenerator():
-  onetimepad = None
-  def __init__(self, onetimepad):
-    if onetimepad == 0:
-      raise InvalidOneTimePadException("A pad of 0 will result in gussable URL's")
-    if onetimepad < 0:
-      raise OutOfRangeException("Source less than 0")
-    if onetimepad >= MAXSOURCEINT:
-      raise OutOfRangeException("Source greater than max")
-    self.onetimepad = onetimepad
-
   def _getTargetNumber(self, source):
     if source < 0:
       raise OutOfRangeException("Source less than 0")
     if source >= MAXSOURCEINT:
       raise OutOfRangeException("Source greater than max")
-    return self.onetimepad ^ source
+    return PAD ^ source
 
   def _getSequenceSourceNumber(self, target):
-    return self.onetimepad ^ target
+    return PAD ^ target
 
   def _getURLStringFromSequence(self, sequence):
     retVal = ""
-    for _ in range(0,5):
+    for _ in range(0,CODELENGTH):
       remainder = int(sequence % len(charsToUseInURL))
       retVal += charsToUseInURL[remainder]
       sequence -= remainder
@@ -59,7 +56,7 @@ class ShortCodeGenerator():
 
   def _getSequenceFromURLSring(self, URLString):
     retVal = 0
-    for x in range(0,5):
+    for x in range(0,CODELENGTH):
       retVal *= len(charsToUseInURL)
       retVal += charsToUseInURL.index(URLString[x])
 
@@ -70,3 +67,13 @@ class ShortCodeGenerator():
 
   def getSequenceFromObscureURLSring(self, URLString):
     return self._getSequenceSourceNumber(target=self._getSequenceFromURLSring(URLString))
+
+  def isValidUrlCode(self, urlCode):
+    if len(urlCode) != CODELENGTH:
+      return False
+    for char in urlCode:
+      if char not in charsToUseInURL:
+        return False
+    return True
+
+shortCodeGenerator = ShortCodeGenerator()

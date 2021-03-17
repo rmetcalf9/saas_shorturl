@@ -1,4 +1,11 @@
 
+jwtHeaderName="jwt-auth-token"
+jwtCookieName="jwt-auth-token"
+loginCookieName="usersystemUserCredentials"
+
+DefaultHasAccountRole="hasaccount"
+
+canNotLinkToDomainMessage="Invalid domain for shorturl"
 
 class customExceptionClass(Exception):
   id = None

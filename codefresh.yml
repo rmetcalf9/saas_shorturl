@@ -88,7 +88,10 @@ steps:
             - APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://localhost"
             - APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="http://localhost"
             - APIAPP_OBJECTSTORECONFIG="{\"Type\":\"Memory\"}"
-    composition_candidates:
+            - APIAPP_REDIRECTPREFIX="http://rjmd.uk"
+            - APIAPP_URLEXPIREDAYS="366"
+            - APIAPP_DESTWHITELIST="{\"challengeapp\":[\"https://challengewsipe.com/#/challengeapp/\"],\"challengeappstage\":[\"https://challengewsipe.com/#/challengeappstage/\"]}"
+   composition_candidates:
       saas_user_management_systemtest:
         image: ${{build_the_test_image}}
         command: /run_tests_with_wait.sh
@@ -114,6 +117,9 @@ steps:
           -e APIAPP_JWTSECRETFILE=/run/secrets/saas_jwtsecret
           --secret saas_shorturl_objectstore_config_dynamodb_cached
           -e APIAPP_OBJECTSTORECONFIGFILE=/run/secrets/saas_shorturl_objectstore_config_dynamodb_cached
+          -e APIAPP_REDIRECTPREFIX="http://rjmd.uk"
+          -e APIAPP_URLEXPIREDAYS="366"
+          -e APIAPP_DESTWHITELIST="{\"challengeapp\":[\"https://challengewsipe.com/#/challengeapp/\"],\"challengeappstage\":[\"https://challengewsipe.com/#/challengeappstage/\"]}"
           metcarob/${RJM_WS_NAME}:${RJM_VERSION}
       environment:
         - SSH_KEY=${{SSH_KEY_COMMAS}}

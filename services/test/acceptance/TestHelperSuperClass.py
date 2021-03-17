@@ -9,6 +9,8 @@ from unittest.mock import patch
 import copy
 import uuid
 import base64
+from SessionMock import SessionMock
+import Logic
 
 import logging
 
@@ -22,6 +24,8 @@ import python_Testing_Utilities
 httpOrigin = 'http://a.com'
 
 infoAPIPrefix = '/api/public/info'
+userPrivateAPIPrefix = '/api/private/user'
+publicAPIPrefix = '/api/public/r'
 
 env = {
   'APIAPP_MODE': 'DOCKER',
@@ -32,7 +36,10 @@ env = {
   'APIAPP_FRONTENDURL': 'http://frontenddummytestxxx',
   'APIAPP_APIACCESSSECURITY': '[]',
   'APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN': httpOrigin + ', https://sillysite.com',
-  'APIAPP_OBJECTSTORECONFIG': '{}'
+  'APIAPP_OBJECTSTORECONFIG': '{}',
+  'APIAPP_REDIRECTPREFIX': 'http://tmye.uk',
+  'APIAPP_URLEXPIREDAYS': '234',
+  'APIAPP_DESTWHITELIST': '{ "TESTTenantName": [ "http://random.com/1" ] }'
 }
 
 
@@ -76,8 +83,37 @@ class testClassWithHelpers(testClassWithTestClient):
 
   def assertInfoAPIResult(self, methodFN, url, session, data):
     return self.assertAPIResult(methodFN, infoAPIPrefix + url, session, data)
+  def assertUserPrivateAPIResult(self, methodFN, url, session, data):
+    return self.assertAPIResult(methodFN, userPrivateAPIPrefix + url, session, data)
+  def assertPublicAPIResult(self, methodFN, url, session, data):
+    return self.assertAPIResult(methodFN, publicAPIPrefix + url, session, data)
 
 
 class simpleTests(testClassWithHelpers):
   def _getEnvironment(self):
     return env
+
+  # returns the URL code and the result
+  def getRedirectUrlUSINGPUBLICAPI(self, shortURL, shortCodeOverride = None, checkAndParseResponse = True):
+    # this used the public API to get the redirect
+    shortCode = shortCodeOverride
+    if shortCodeOverride is None:
+      shortCode = shortURL[-Logic.CODELENGTH:]
+
+    result = self.assertPublicAPIResult(
+      methodFN=self.testClient.get,
+      url="/" + shortCode,
+      session=None,
+      data=None
+    )
+    if result.status_code == 404:
+      return None, result
+    if result.status_code == 301:
+      return result.headers["location"], result
+
+    if checkAndParseResponse:
+      print("result status", result.status_code)
+      print("result text", result.get_data(as_text=True))
+      raise Exception("Invalid response at public API")
+
+    return None, result

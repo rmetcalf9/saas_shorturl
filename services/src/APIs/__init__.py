@@ -1,8 +1,8 @@
-#from .APIUserPrivate import registerAPI as userPrivate_registerAPI
+from .APIPrivate import registerAPI as private_registerAPI
+from .APIPublic import registerAPI as public_registerAPI
 
 def registerAPIs(appObj):
-  # nsUserPrivate = appObj.flastRestPlusAPIObject.namespace('private/user', description='User Private API')
-  # userPrivate_registerAPI(appObj=appObj, APInamespace=nsUserPrivate)
-
-  pass
-
+  nsPrivate = appObj.flastRestPlusAPIObject.namespace('private/user', description='Private API')
+  private_registerAPI(appObj=appObj, APInamespace=nsPrivate)
+  nsPublic = appObj.flastRestPlusAPIObject.namespace('public/r', description='Publice API')
+  public_registerAPI(appObj=appObj, APInamespace=nsPublic)

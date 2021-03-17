@@ -1,7 +1,41 @@
 #appObj.py - This file contains the main application object
 # to be constructed by app.py
 
-from baseapp_for_restapi_backend_with_swagger import AppObjBaseClass as parAppObj, readFromEnviroment
+from baseapp_for_restapi_backend_with_swagger import AppObjBaseClass as parAppObj, readFromEnviroment, getInvalidEnvVarParamaterException
+
+def readDictFromEnviroment(
+  env,
+  envVarName,
+  defaultValue
+):
+  valueJSON = readFromEnviroment(
+    env=env,
+    envVarName=envVarName,
+    defaultValue=defaultValue,
+    acceptableValues=None
+  )
+  valueDict = None
+  try:
+    if valueJSON != '{}':
+      valueDict = json.loads(valueJSON)
+  except Exception as err:
+    print(err)  # for the repr
+    print(str(err))  # for just the message
+    print(err.args)  # the arguments that the exception has been called with.
+    raise getInvalidEnvVarParamaterException(envVarName=envVarName, actualValue=None, messageOverride=None)
+
+    if isinstance(objectStoreConfigDict, str):
+      # Codfresh container test has problems passing json this deals with it's input
+      print(envVarName + " parsing First JSON pass gave string")
+      #####print("XXX", objectStoreConfigDict) (This debug comment may display a password)
+      valueDict = json.loads(objectStoreConfigDict)
+
+    if not valueDict is None:
+      if not isinstance(valueDict, dict):
+        print(envVarName + " did not evaluate to a dictionary")
+        raise getInvalidEnvVarParamaterException(envVarName=envVarName, actualValue=None, messageOverride=None)
+
+  return valueDict
 
 import constants
 import json
@@ -10,16 +44,24 @@ import logging
 import sys
 import APIs
 
+import Logic
+
 from object_store_abstraction import createObjectStoreInstance
 
 invalidConfigurationException = constants.customExceptionClass('Invalid Configuration')
 
 InvalidObjectStoreConfigInvalidJSONException = constants.customExceptionClass('APIAPP_OBJECTSTORECONFIG value is not valid JSON')
+InvalidRedirectPrefixException = constants.customExceptionClass('APIAPP_REDIRECTPREFIX value is not valid - can not end with slash, must start with http:// or https://')
 
 class appObjClass(parAppObj):
   objectStore = None
   APIAPP_OBJECTSTOREDETAILLOGGING = None
+  APIAPP_REDIRECTPREFIX = None
+  APIAPP_URLEXPIREDAYS = None
+  APIAPP_DESTWHITELIST = None
   accessControlAllowOriginObj = None
+
+  shortUrlFunctions = None
 
   def setupLogging(self):
     root = logging.getLogger()
@@ -37,27 +79,38 @@ class appObjClass(parAppObj):
     super(appObjClass, self).init(env, serverStartTime, testingMode, serverinfoapiprefix='public/info')
     ##print("appOBj init")
 
-    objectStoreConfigJSON = readFromEnviroment(env, 'APIAPP_OBJECTSTORECONFIG', '{}', None)
-    objectStoreConfigDict = None
-    try:
-      if objectStoreConfigJSON != '{}':
-        objectStoreConfigDict = json.loads(objectStoreConfigJSON)
-    except Exception as err:
-      print(err) # for the repr
-      print(str(err)) # for just the message
-      print(err.args) # the arguments that the exception has been called with.
-      raise(InvalidObjectStoreConfigInvalidJSONException)
+    self.APIAPP_REDIRECTPREFIX = readFromEnviroment(
+      env=env,
+      envVarName='APIAPP_REDIRECTPREFIX',
+      defaultValue=None,
+      acceptableValues=None,
+      nullValueAllowed=False
+    )
+    print("APIAPP_REDIRECTPREFIX:", self.APIAPP_REDIRECTPREFIX)
+    if self.APIAPP_REDIRECTPREFIX.endswith("/"):
+      raise InvalidRedirectPrefixException
+    if not self.APIAPP_REDIRECTPREFIX.startswith("http://"):
+      if not self.APIAPP_REDIRECTPREFIX.startswith("https://"):
+        raise InvalidRedirectPrefixException
 
-    if isinstance(objectStoreConfigDict, str):
-      # Codfresh container test has problems passing json this deals with it's input
-      print("APIAPP_OBJECTSTORECONFIG parsing First JSON pass gave string")
-      #####print("XXX", objectStoreConfigDict) (This debug comment may display a password)
-      objectStoreConfigDict = json.loads(objectStoreConfigDict)
+    self.APIAPP_URLEXPIREDAYS = readFromEnviroment(
+      env=env,
+      envVarName='APIAPP_URLEXPIREDAYS',
+      defaultValue=None,
+      acceptableValues=None,
+      nullValueAllowed=False
+    )
+    print("APIAPP_URLEXPIREDAYS:", self.APIAPP_REDIRECTPREFIX)
+    self.APIAPP_URLEXPIREDAYS = int(self.APIAPP_URLEXPIREDAYS)
+    if (self.APIAPP_URLEXPIREDAYS < 0):
+      print("ERROR - Expire days less than 0")
+      raise invalidConfigurationException
 
-    if not objectStoreConfigDict is None:
-      if not isinstance(objectStoreConfigDict, dict):
-        print("ObjectStoreConfig did not evaluate to a dictionary")
-        raise(InvalidObjectStoreConfigInvalidJSONException)
+    objectStoreConfigDict = readDictFromEnviroment(
+      env=env,
+      envVarName='APIAPP_OBJECTSTORECONFIG',
+      defaultValue='{}'
+    )
 
     self.APIAPP_OBJECTSTOREDETAILLOGGING = readFromEnviroment(
       env=env,
@@ -77,6 +130,24 @@ class appObjClass(parAppObj):
       fns,
       detailLogging=(self.APIAPP_OBJECTSTOREDETAILLOGGING == 'Y')
     )
+
+    self.shortUrlFunctions = Logic.ShortUrlFunctionClass(appObj=self)
+
+    self.APIAPP_DESTWHITELIST = readDictFromEnviroment(
+      env=env,
+      envVarName='APIAPP_DESTWHITELIST',
+      defaultValue='{}'
+    )
+    if self.APIAPP_DESTWHITELIST is None:
+      self.APIAPP_DESTWHITELIST = {}
+    for curTenant in self.APIAPP_DESTWHITELIST:
+      if not isinstance(self.APIAPP_DESTWHITELIST[curTenant], list):
+        print("ERROR - APIAPP_DESTWHITELIST tenant values must be lists of string")
+        raise invalidConfigurationException
+      for ite in self.APIAPP_DESTWHITELIST[curTenant]:
+        if not isinstance(ite, str):
+          print("ERROR - APIAPP_DESTWHITELIST tenant value lists can only contain strings")
+          raise invalidConfigurationException
 
   def initOnce(self):
     super(appObjClass, self).initOnce()
