@@ -24,11 +24,11 @@ def readDictFromEnviroment(
     print(err.args)  # the arguments that the exception has been called with.
     raise getInvalidEnvVarParamaterException(envVarName=envVarName, actualValue=None, messageOverride=None)
 
-    if isinstance(objectStoreConfigDict, str):
-      # Codfresh container test has problems passing json this deals with it's input
-      print(envVarName + " parsing First JSON pass gave string")
-      #####print("XXX", objectStoreConfigDict) (This debug comment may display a password)
-      valueDict = json.loads(objectStoreConfigDict)
+  if isinstance(valueDict, str):
+    # Codfresh container test has problems passing json this deals with it's input
+    print(envVarName + " parsing First JSON pass gave string")
+    #####print("XXX", valueDict) (This debug comment may display a password)
+    valueDict = json.loads(valueDict)
 
     if not valueDict is None:
       if not isinstance(valueDict, dict):
@@ -100,7 +100,7 @@ class appObjClass(parAppObj):
       acceptableValues=None,
       nullValueAllowed=False
     )
-    print("APIAPP_URLEXPIREDAYS:", self.APIAPP_REDIRECTPREFIX)
+    print("APIAPP_URLEXPIREDAYS:", self.APIAPP_URLEXPIREDAYS)
     self.APIAPP_URLEXPIREDAYS = int(self.APIAPP_URLEXPIREDAYS)
     if (self.APIAPP_URLEXPIREDAYS < 0):
       print("ERROR - Expire days less than 0")
