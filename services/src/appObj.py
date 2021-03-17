@@ -6,7 +6,8 @@ from baseapp_for_restapi_backend_with_swagger import AppObjBaseClass as parAppOb
 def readDictFromEnviroment(
   env,
   envVarName,
-  defaultValue
+  defaultValue,
+  safeToOutput=False
 ):
   valueJSON = readFromEnviroment(
     env=env,
@@ -19,6 +20,9 @@ def readDictFromEnviroment(
     if valueJSON != '{}':
       valueDict = json.loads(valueJSON)
   except Exception as err:
+    print("Error parsing JSON for " + envVarName)
+    if safeToOutput:
+      print("Value:" + valueJSON + ":")
     print(err)  # for the repr
     print(str(err))  # for just the message
     print(err.args)  # the arguments that the exception has been called with.
@@ -136,7 +140,8 @@ class appObjClass(parAppObj):
     self.APIAPP_DESTWHITELIST = readDictFromEnviroment(
       env=env,
       envVarName='APIAPP_DESTWHITELIST',
-      defaultValue='{}'
+      defaultValue='{}',
+      safeToOutput=True
     )
     if self.APIAPP_DESTWHITELIST is None:
       self.APIAPP_DESTWHITELIST = {}
