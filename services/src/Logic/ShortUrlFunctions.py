@@ -27,9 +27,6 @@ class ShortUrlFunctionClass():
     tenantName
   ):
     if not self._isDestAllowed(tenantName=tenantName, url=content["url"]):
-      print("DDD")
-      print(content["url"])
-      print(isValidUrl(content["url"]))
       raise Forbidden(constants.canNotLinkToDomainMessage)
     urlCode = self.shortUrl.getShortUrl(storeConnection=storeConnection)
     expire = self.appObj.getCurDateTime() + datetime.timedelta(days=self.appObj.APIAPP_URLEXPIREDAYS)
@@ -92,12 +89,10 @@ class ShortUrlFunctionClass():
 
   def _isDestAllowed(self, tenantName, url):
     if tenantName not in self.appObj.APIAPP_DESTWHITELIST:
-      print("2222")
       return False
     for allowedStart in self.appObj.APIAPP_DESTWHITELIST[tenantName]:
       if url.startswith(allowedStart):
         if isValidUrl(url):
           return True
-    print("1111")
     return False
 
