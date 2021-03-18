@@ -1,0 +1,7 @@
+
+# to set "keyring set challenge CHALLENGEAPPTESTACCOUNTUSERNAME"
+## then it will prompt you for the value
+
+
+export CHALLENGEAPPTESTACCOUNTUSERNAME=$(keyring get challenge CHALLENGEAPPTESTACCOUNTUSERNAME)
+export CHALLENGEAPPTESTACCOUNTPASSWORD=$(keyring get challenge CHALLENGEAPPTESTACCOUNTPASSWORD)

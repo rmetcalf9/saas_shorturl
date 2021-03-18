@@ -6,10 +6,10 @@ SAAS_USERMANAGEMENT_CONTAINER=metcarob/saas_user_management:0.0.152
 
 SAAS_APIAPP_MASTERPASSWORDFORPASSHASH=wefgFvGFt5433e
 
-# 8099 is hard coded in the saas_user_management container (Shared functions)
+# value is hard coded in the saas_user_management container (Shared functions)
 #  compiled into the webapp in the part where it identifies backend api
 #  in this project in saasLinkvisCallapi.js
-EXTPORT80FORSECURITY=8099
+EXTPORT80FORSECURITY=8096
 
 PYTHON_CMD=python3
 if [ E${EXTPYTHONCMD} != "E" ]; then
@@ -56,7 +56,7 @@ export APIAPP_APIURL=${EXTURL}:${EXTPORT}/api
 export APIAPP_APIDOCSURL=${EXTURL}:${EXTPORT}/apidocs
 export APIAPP_FRONTENDURL=${EXTURL}:${EXTPORT}/frontend
 export APIAPP_APIACCESSSECURITY=[]
-export APIAPP_PORT=8098
+export APIAPP_PORT=8096
 ##export APIAPP_OBJECTSTORECONFIG="{\"Type\":\"Memory\"}"
 export APIAPP_OBJECTSTORECONFIG="{\"Type\": \"SimpleFileStore\",\"BaseLocation\": \"./objectstoredata\"}"
 export APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="http://localhost:8080"

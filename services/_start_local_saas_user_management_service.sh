@@ -3,11 +3,11 @@
 # Script to start a local version of the saas user management service
 #  will terminate if already running
 
-# Service should be accessable at http://localhost:8098/public/web/frontend/
-# (Chrome dosen't like that so use http://127.0.0.1:8098/public/web/frontend/
-# API DOCS: http://127.0.0.1:8098/public/web/apidocs
-# API's at http://127.0.0.1:8098/public/api/info/serverinfo
-# API's at http://127.0.0.1:8098/public/api/login/linkvis/authproviders
+# Service should be accessable at http://localhost:8099/public/web/frontend/
+# (Chrome dosen't like that so use http://127.0.0.1:8099/public/web/frontend/
+# API DOCS: http://127.0.0.1:8099/public/web/apidocs
+# API's at http://127.0.0.1:8099/public/api/info/serverinfo
+# API's at http://127.0.0.1:8099/public/api/login/linkvis/authproviders
 
 ## UI Login: http://127.0.0.1:8099/public/web/adminfrontend/
 # admin/admin
@@ -60,14 +60,14 @@ docker service create --name ${LOCALSERVICENAME} \
 -e APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://localhost" \
 -e APIAPP_MASTERPASSWORDFORPASSHASH=${APIAPP_MASTERPASSWORDFORPASSHASH} \
 -e APIAP_MODE=DEVELOPER \
--e APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://127.0.0.1:8099" \
+-e APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://127.0.0.1:8096" \
 -e APIAPP_AUTOCONFIGFILE=/hostservices/_start_local_saas_user_management_service_config.json \
 ${EXTRAOPTS} \
 --mount type=bind,source=$(pwd)/,destination=/hostservices/,readonly \
 --publish ${IEXTPORT80}:80 \
 ${RJM_IMAGE_TO_RUN}
 
-##http://127.0.0.1:8099
+##http://127.0.0.1:8096
 
 #-e APIAPP_GATEWAYINTERFACECONFIGFILE=/run/secrets/saas_user_management_system_gateway_config \
 #-e APIAPP_MASTERPASSWORDFORPASSHASHFILE=/run/secrets/saas_user_management_system_objectstore_hashpw \

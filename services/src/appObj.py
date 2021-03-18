@@ -1,5 +1,6 @@
 #appObj.py - This file contains the main application object
 # to be constructed by app.py
+from flask import request
 
 from baseapp_for_restapi_backend_with_swagger import AppObjBaseClass as parAppObj, readFromEnviroment, getInvalidEnvVarParamaterException
 
@@ -145,6 +146,7 @@ class appObjClass(parAppObj):
     )
     if self.APIAPP_DESTWHITELIST is None:
       self.APIAPP_DESTWHITELIST = {}
+    print("APIAPP_DESTWHITELIST:", self.APIAPP_DESTWHITELIST)
     for curTenant in self.APIAPP_DESTWHITELIST:
       if not isinstance(self.APIAPP_DESTWHITELIST[curTenant], list):
         print("ERROR - APIAPP_DESTWHITELIST tenant values must be lists of string")
@@ -161,6 +163,14 @@ class appObjClass(parAppObj):
 
     self.flastRestPlusAPIObject.title = "Challange Platform"
     self.flastRestPlusAPIObject.description = "API for Challange Platform"
+
+    # @self.flaskAppObject.after_request
+    # def after_request(response):
+    #   if request.method == "OPTIONS":
+    #     response.status_code = 200
+    #     response.content = ""
+    #   return response
+
 
   def stopThread(self):
     ##print("stopThread Called")

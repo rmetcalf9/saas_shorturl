@@ -20,3 +20,18 @@ variable "deployment_config" {
   })
 
 }
+
+variable "mainurl_include" {
+  default = true
+}
+variable "mainurl" {
+  default = "rjm2.cc"
+}
+variable "mainurl_majorversion" {
+  default = "0"
+}
+variable "mainurl_destpath" {
+  # when in github I think this should be
+  # /public/web/frontend/
+  default = "/public/"
+}

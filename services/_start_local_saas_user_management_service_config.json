@@ -4,7 +4,7 @@
       "tenantName": "challengeappDEV",
       "description": "Autoconfig tenant for development testing",
       "allowUserCreation": true,
-      "JWTCollectionAllowedOriginList": [ "https://api.metcarob.com", "http://localhost:8080", "http://127.0.0.1:8099" ]
+      "JWTCollectionAllowedOriginList": [ "https://api.metcarob.com", "http://localhost:8080", "http://127.0.0.1:8096" ]
     }},
     { "type": "addAuthProvider", "data": {
       "tenantName": "challengeappDEV",
