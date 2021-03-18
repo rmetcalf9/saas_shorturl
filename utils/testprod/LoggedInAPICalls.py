@@ -21,14 +21,14 @@ def createUrl(loginSession, target, tenantName):
   # print("url:", URL)
   # print("postData:", postData)
 
-  if response.status_code != 200:
+  if response.status_code != 202:
     print(response.status_code)
     print(response.text)
     raise Exception("Put URL failed")
 
   return json.loads(response.text)
 
-def deleteShortUrl(shortUrl, tenantName):
+def deleteShortUrl(loginSession, shortUrl, tenantName):
   URl = "https://api.metcarob.com/saas_shorturl/v0/private/api/user/" + tenantName + "/shortUrl/" + shortUrl["id"]
 
   headers = {}

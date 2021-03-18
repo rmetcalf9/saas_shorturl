@@ -33,6 +33,7 @@ else:
   print("PASSED, url redirect is correct")
 
 LoggedInAPICalls.deleteShortUrl(
+loginSession=loginSession,
   shortUrl=shortUrl,
   tenantName = tenantName
 )

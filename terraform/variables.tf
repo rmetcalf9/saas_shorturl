@@ -33,5 +33,5 @@ variable "mainurl_majorversion" {
 variable "mainurl_destpath" {
   # when in github I think this should be
   # /public/web/frontend/
-  default = "/public/"
+  default = "/public/api/r/"
 }
