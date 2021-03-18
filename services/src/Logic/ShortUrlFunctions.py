@@ -27,6 +27,10 @@ class ShortUrlFunctionClass():
     tenantName
   ):
     if not self._isDestAllowed(tenantName=tenantName, url=content["url"]):
+      print("putNewShourtUrl Failed")
+      print("tenant", tenantName)
+      print("url", content["url"])
+      print("must start with one of", self.appObj.APIAPP_DESTWHITELIST[tenantName])
       raise Forbidden(constants.canNotLinkToDomainMessage)
     urlCode = self.shortUrl.getShortUrl(storeConnection=storeConnection)
     expire = self.appObj.getCurDateTime() + datetime.timedelta(days=self.appObj.APIAPP_URLEXPIREDAYS)

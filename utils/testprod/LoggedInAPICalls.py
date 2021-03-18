@@ -2,7 +2,7 @@ import requests
 import json
 
 def createUrl(loginSession, target, tenantName):
-  URl = "https://api.metcarob.com/saas_shorturl/v0/private/api/user/" + tenantName + "/shortUrl"
+  URL = "https://api.metcarob.com/saas_shorturl/v0/private/api/user/" + tenantName + "/shortUrl"
 
   postData = {
     "url": target
@@ -14,10 +14,13 @@ def createUrl(loginSession, target, tenantName):
   loginSession.addHeaders(headers)
 
   response = requests.put(
-    url=URl,
+    url=URL,
     headers=headers,
     data=json.dumps(postData)
   )
+  # print("url:", URL)
+  # print("postData:", postData)
+
   if response.status_code != 200:
     print(response.status_code)
     print(response.text)

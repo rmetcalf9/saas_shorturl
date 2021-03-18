@@ -9,6 +9,7 @@ from dateutil.parser import parse
 import constants
 
 targetUrl = "http://random.com/1/2/3"
+#targetUrl = "https://challengeswipe.com/#/challengeapp/about"
 suspectTargetUrl = "http://suspectrandom.com/1/2/3"
 
 class helpers(TestHelperSuperClass.simpleTests):

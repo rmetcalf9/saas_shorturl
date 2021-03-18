@@ -39,7 +39,7 @@ env = {
   'APIAPP_OBJECTSTORECONFIG': '{}',
   'APIAPP_REDIRECTPREFIX': 'http://tmye.uk',
   'APIAPP_URLEXPIREDAYS': '234',
-  'APIAPP_DESTWHITELIST': '{ "TESTTenantName": [ "http://random.com/1" ] }'
+  'APIAPP_DESTWHITELIST': '{ "TESTTenantName": [ "http://random.com/1" ], "Tenant222": [ "ddW" ] }'
 }
 
 
