@@ -246,5 +246,32 @@ class test_apiPrivate(helpers):
     self.assertEqual(result.status_code, 403, result.get_data(as_text=True))
     resultJSON = json.loads(result.get_data(as_text=True))
 
-    self.assertEqual(resultJSON["message"],constants.canNotLinkToDomainMessage)
+    self.assertEqual(resultJSON["message"],constants.canNotLinkToDomainMessage + " Start mismatch")
 
+  def test_putDiffTenant_failsWithError(self):
+    loginSession = LoginUtilities.getUserLoginSession("TESTTenantNameXX", 1)
+
+    result = self.putUrl(
+      loginSession=loginSession,
+      tenantName="TESTTenantNameXX",
+      url=suspectTargetUrl,
+      checkAndParseResponse=False
+    )
+    self.assertEqual(result.status_code, 403, result.get_data(as_text=True))
+    resultJSON = json.loads(result.get_data(as_text=True))
+
+    self.assertEqual(resultJSON["message"],constants.canNotLinkToDomainMessage + " bad tenant")
+
+  def test_putwithnopostdata_fails(self):
+    tenantName="ABC"
+    loginSession = LoginUtilities.getUserLoginSession(tenantName, 1)
+    result = self.assertUserPrivateAPIResult(
+      methodFN=self.testClient.put,
+      url="/" + tenantName + "/shortUrl",
+      session=loginSession,
+      data=None
+    )
+    self.assertEqual(result.status_code, 400)
+    resultJSON = json.loads(result.get_data(as_text=True))
+
+    self.assertEqual(resultJSON["message"],"url not in payload")

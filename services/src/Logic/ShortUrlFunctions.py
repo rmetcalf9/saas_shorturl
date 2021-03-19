@@ -26,8 +26,11 @@ class ShortUrlFunctionClass():
     content,
     tenantName
   ):
-    if not self._isDestAllowed(tenantName=tenantName, url=content["url"]):
-      raise Forbidden(constants.canNotLinkToDomainMessage)
+    if len(content["url"]) < 10:
+      raise Forbidden(constants.canNotLinkToDomainMessage + " URL passed is less than 10 chars")
+    isDestAllowed, reason = self._isDestAllowed(tenantName=tenantName, url=content["url"])
+    if not isDestAllowed:
+      raise Forbidden(constants.canNotLinkToDomainMessage + " " + reason)
     urlCode = self.shortUrl.getShortUrl(storeConnection=storeConnection)
     expire = self.appObj.getCurDateTime() + datetime.timedelta(days=self.appObj.APIAPP_URLEXPIREDAYS)
     shortUrlJson = {
@@ -89,10 +92,11 @@ class ShortUrlFunctionClass():
 
   def _isDestAllowed(self, tenantName, url):
     if tenantName not in self.appObj.APIAPP_DESTWHITELIST:
-      return False
+      return False, "bad tenant"
+    if not isValidUrl(url):
+      return False, "invalid url"
     for allowedStart in self.appObj.APIAPP_DESTWHITELIST[tenantName]:
       if url.startswith(allowedStart):
-        if isValidUrl(url):
-          return True
-    return False
+        return True, ""
+    return False, "Start mismatch"
 

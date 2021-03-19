@@ -10,7 +10,8 @@ workingURLsToTest = [
   "https://random.com:80/",
   "http://random.com:80/1/2/3",
   "https://random.com:80/1/2/3?a=b&c=d&e=f",
-  "https://challengeswipe.com/#/challengeapp/about"
+  "https://challengeswipe.com/#/challengeapp/about",
+  "http://localhost:8080/#/challengeappDEV/challenge/326/75ff72da-add7-4760-b0c0-d6354c4026a4"
 ]
 failingURLsToTest = [
   "",

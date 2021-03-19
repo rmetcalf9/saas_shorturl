@@ -3,7 +3,7 @@ from object_store_abstraction import RepositoryObjBaseClass
 
 def putNewShortUrlModel(appObj):
   return appObj.flastRestPlusAPIObject.model('putNewShortUrl', {
-    'url': fields.String(default='', description='URL to point to')
+    'url': fields.String(default=None, description='URL to point to')
   })
 
 
