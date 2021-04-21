@@ -15,7 +15,8 @@ def getRedirectUrl(shortUrl):
   if response.status_code != 301:
     print(response.status_code)
     print(response.text)
-    raise Exception("Redirect failed")
+    print("FAIL FAIL FAIL - redirect failed - not excepting so we still try and delete")
+    #raise Exception("Redirect failed")
 
   return response.headers["Location"]
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "challengeapp"
+echo "saas_shorturl"
 
 SAAS_USERMANAGEMENT_CONTAINER=metcarob/saas_user_management:0.0.152
 
