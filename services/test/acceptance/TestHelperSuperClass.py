@@ -4,7 +4,6 @@ import datetime
 from appObj import appObj
 import json
 import constants
-import TestingHelper
 from unittest.mock import patch
 import copy
 import uuid
@@ -13,10 +12,6 @@ from SessionMock import SessionMock
 import Logic
 
 import logging
-
-from nose.plugins.attrib import attr
-def wipd(f):
-    return attr('wip')(f)
 
 import python_Testing_Utilities
 
