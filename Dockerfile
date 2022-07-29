@@ -32,7 +32,7 @@ ENV APIAPP_MODE DOCKER
 EXPOSE 80
 
 # baseapp forces us to create the frontend directory of app will not load
-RUN apk add --no-cache bash python3 curl python3-dev build-base linux-headers pcre-dev libffi-dev openldap-dev libxml2 libxslt libxslt-dev libxml2-dev && \
+RUN apk add --no-cache bash python3 curl python3-dev build-base linux-headers pcre-dev libffi-dev && \
     python3 -m ensurepip && \
     rm -r /usr/lib/python*/ensurepip && \
     pip3 install --upgrade pip setuptools && \
@@ -44,8 +44,8 @@ RUN apk add --no-cache bash python3 curl python3-dev build-base linux-headers pc
     pip3 install uwsgi && \
     wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -O /rds-combined-ca-bundle.pem
 
-# lmxml build process always runs out of memory
-RUN pip3 install lxml==4.5.2
+### lmxml build process always runs out of memory
+##RUN pip3 install lxml==4.5.2
 
 COPY ./services/src ${APP_DIR}
 RUN pip3 install -r ${APP_DIR}/requirements.txt
