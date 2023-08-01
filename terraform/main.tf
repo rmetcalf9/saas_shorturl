@@ -16,7 +16,7 @@ module "saas_infra" {
   secure_main_private = true
 
   private_allow_tenant_role_whitelist = [
-    "saas_shorturl:hasaccount", "xx:hasaccount"
+    "saas_shorturl:hasaccount", "challengeapp:hasaccount", "challengeappstage:hasaccount"
   ]
 
   # main url section
