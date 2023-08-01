@@ -1,7 +1,7 @@
 # main.tf
 
 module "saas_infra" {
-  source = "git::https://github.com/rmetcalf9/tf_saas_service_infra.git?ref=0.0.7"
+  source = "git::https://github.com/rmetcalf9/tf_saas_service_infra.git?ref=0.0.8"
 
   ws_name = var.ws_name
   deployment_config = var.deployment_config
@@ -16,9 +16,6 @@ module "saas_infra" {
   secure_main_private = true
 
   private_allow_tenant_role_whitelist = [
-    "saas_shorturl:hasaccount", "xx:hasaccount"
-  ]
-  public_allow_tenant_role_whitelist = [
     "saas_shorturl:hasaccount", "xx:hasaccount"
   ]
 
