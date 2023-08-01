@@ -18,6 +18,9 @@ module "saas_infra" {
   private_allow_tenant_role_whitelist = [
     "saas_shorturl:hasaccount", "xx:hasaccount"
   ]
+  public_allow_tenant_role_whitelist = [
+    "saas_shorturl:hasaccount", "xx:hasaccount"
+  ]
 
   # main url section
   mainurl_include = true
