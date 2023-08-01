@@ -11,12 +11,12 @@ module "saas_infra" {
   # include_main_public = false
   # include_main_private = false
 
-  # No private endpoint. URL's can only be created via MQ event
-  secure_test_private = false
-  secure_main_private = false
+  # Private endpoints protected by roles
+  secure_test_private = true
+  secure_main_private = true
 
   private_allow_tenant_role_whitelist = [
-    "saas_shorturl:hasaccount"
+    "saas_shorturl:hasaccount", "xx:hasaccount"
   ]
 
   # main url section
