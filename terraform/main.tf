@@ -1,7 +1,7 @@
 # main.tf
 
 module "saas_infra" {
-  source = "git::https://github.com/rmetcalf9/tf_saas_service_infra.git?ref=0.0.11"
+  source = "git::https://github.com/rmetcalf9/tf_saas_service_infra.git?ref=0.0.12"
 
   ws_name = var.ws_name
   deployment_config = var.deployment_config
@@ -27,4 +27,3 @@ module "saas_infra" {
   tenant_path_position_main_private = 6
   tenant_path_position_test_private = 6
 }
-
