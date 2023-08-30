@@ -128,7 +128,7 @@ steps:
           -e APIAPP_APIURL=https://api.metcarob.com/saas_shorturl/v${{RJM_MAJOR_VERSION}}/public/api
           -e APIAPP_APIDOCSURL=https://api.metcarob.com/saas_shorturl/v${{RJM_MAJOR_VERSION}}/public/web/apidocs
           -e APIAPP_FRONTENDURL=https://api.metcarob.com/saas_shorturl/v${{RJM_MAJOR_VERSION}}/public/web/frontend
-          -e APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="https://api.metcarob.com,https://challengeswipe.com,http://platform.challengeswipe.com"
+          -e APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="https://socialclubhub.app,https://api.metcarob.com,https://challengeswipe.com,http://platform.challengeswipe.com"
           -e APIAPP_JWTSECRETFILE=/run/secrets/saas_jwtsecret
           --secret saas_shorturl_objectstore_config_dynamodb_cached
           -e APIAPP_OBJECTSTORECONFIGFILE=/run/secrets/saas_shorturl_objectstore_config_dynamodb_cached
