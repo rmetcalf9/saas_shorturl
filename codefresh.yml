@@ -134,7 +134,7 @@ steps:
           -e APIAPP_OBJECTSTORECONFIGFILE=/run/secrets/saas_shorturl_objectstore_config_dynamodb_cached
           -e APIAPP_REDIRECTPREFIX=http://rjm2.cc
           -e APIAPP_URLEXPIREDAYS=366
-          -e APIAPP_DESTWHITELIST="\{\\\"challengeapp\\\":[\\\"https://challengeswipe.com/#/challengeapp/\\\"],\\\"challengeappstage\\\":[\\\"https://challengewsipe.com/#/challengeappstage/\\\"]\}"
+          -e APIAPP_DESTWHITELIST="\{\\\"social\\\":[\\\"https://socialclubhub.app/#/social/\\\"],\\\"challengeapp\\\":[\\\"https://challengeswipe.com/#/challengeapp/\\\"],\\\"challengeappstage\\\":[\\\"https://challengewsipe.com/#/challengeappstage/\\\"]\}"
           metcarob/${RJM_WS_NAME}:${RJM_VERSION}
       environment:
         - SSH_KEY=${{SSH_KEY_COMMAS}}
