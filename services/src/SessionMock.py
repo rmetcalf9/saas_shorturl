@@ -38,7 +38,7 @@ def generateJWTToken(appObj, userDict, secret, key, personGUID, currentlyUsedAut
 
   # print("generateJWTToken", expiryTime)
 
-  return {'JWTToken': encodedJWT.decode('utf-8'), 'TokenExpiry': expiryTime.isoformat() }
+  return {'JWTToken': encodedJWT, 'TokenExpiry': expiryTime.isoformat() }
 
 
 def generateJWTTokenFromUserDict(userDict, JWTSecretFn):
