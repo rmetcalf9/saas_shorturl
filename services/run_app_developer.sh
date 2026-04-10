@@ -2,19 +2,24 @@
 
 echo "saas_shorturl"
 
-SAAS_USERMANAGEMENT_CONTAINER=metcarob/saas_user_management:0.0.152
+INITAL_DIR=$(pwd)
+
+cd ..
+source ./_repo_vars.sh
+cd ${INITAL_DIR}
 
 SAAS_APIAPP_MASTERPASSWORDFORPASSHASH=wefgFvGFt5433e
 
-# value is hard coded in the saas_user_management container (Shared functions)
+# 8099 is hard coded in the saas_user_management container (Shared functions)
 #  compiled into the webapp in the part where it identifies backend api
 #  in this project in saasLinkvisCallapi.js
-EXTPORT80FORSECURITY=8096
+EXTPORT80FORSECURITY=8099
 
-PYTHON_CMD=python3
-if [ E${EXTPYTHONCMD} != "E" ]; then
-  PYTHON_CMD=${EXTPYTHONCMD}
-fi
+PYTHON_CMD=python
+# We are using venv - see source command velow
+#if [ E${EXTPYTHONCMD} != "E" ]; then
+#  PYTHON_CMD=${EXTPYTHONCMD}
+#fi
 
 #pyCharm will run in project root directory. Check if we are here and if so then change int oservices directory
 if [ -d "./services" ]; then
@@ -81,14 +86,26 @@ if [ E${APIAPP_VERSION} = 'E' ]; then
   exit 1
 fi
 
-# Start security service (if not already running)
-./_start_local_saas_user_management_service.sh ${SAAS_USERMANAGEMENT_CONTAINER} \
-  ${APIAPP_JWTSECRET} \
-  ${EXTURL} \
-  ${EXTPORT} \
-  ${EXTPORT80FORSECURITY} \
-  ${SAAS_APIAPP_MASTERPASSWORDFORPASSHASH}
+SETUP_JSON_DIR=${INITAL_DIR}
+SETUP_JSON_FILENAME="_start_local_saas_user_management_service_config.json"
+EXPECTED_TENANT="challengeappDEV"
+EXTERNAL_VOLUME=""
+APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN_FOR_USER_MANAGEMENT="http://localhost"
 
+
+# Start security service (if not already running)
+start_local_saas_user_management_service \
+   ${RJM_USERMANAGEMENT_CONTAINER} \
+   ${APIAPP_JWTSECRET} \
+   ${EXTURL} \
+   ${EXTPORT} \
+   ${EXTPORT80FORSECURITY} \
+   ${SAAS_APIAPP_MASTERPASSWORDFORPASSHASH} \
+   "${APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN_FOR_USER_MANAGEMENT}" \
+   ${SETUP_JSON_DIR} \
+   ${SETUP_JSON_FILENAME} \
+   ${EXPECTED_TENANT} \
+   "${EXTERNAL_VOLUME}"
 RES=$?
 if [ ${RES} -ne 0 ]; then
   echo "Error starting security microservice"
