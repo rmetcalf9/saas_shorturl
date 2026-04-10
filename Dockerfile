@@ -29,35 +29,19 @@ ENV APIAPP_MODE DOCKER
 
 EXPOSE 80
 
+COPY install-nginx-debian.sh /
 
-# =========================
-# System deps (Debian-based, stable)
-# =========================
-RUN apt-get update && apt-get install -y \
-    nginx \
-    bash \
-    curl \
-    build-essential \
-    libpcre3-dev \
-    libffi-dev \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get install ca-certificates && \
+    bash /install-nginx-debian.sh && \
+    mkdir ${APP_DIR} && \
+    mkdir ${APIAPP_FRONTEND_FRONTEND} && \
+    mkdir /var/log/uwsgi && \
+    pip3 install uwsgi && \
+    wget --ca-directory=/etc/ssl/certs https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -O /rds-combined-ca-bundle.pem
 
-# =========================
-# App structure
-# =========================
-RUN mkdir -p ${APP_DIR} \
-    && mkdir -p ${APIAPP_FRONTEND_FRONTEND} \
-    && mkdir -p /var/log/uwsgi
-
-# =========================
-# Python deps
-# =========================
 COPY ./services/src ${APP_DIR}
+RUN pip3 install -r ${APP_DIR}/requirements.txt
 
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir uwsgi \
-    && pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
 
 # =========================
 # Static/config files
@@ -71,12 +55,6 @@ COPY ./healthcheck.sh /healthcheck.sh
 RUN chmod +x /run_app_docker.sh /healthcheck.sh
 
 # =========================
-# TLS bundle (if needed for AWS/RDS)
-# =========================
-RUN curl -o /rds-combined-ca-bundle.pem \
-    https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
-
-# =========================
 # Runtime
 # =========================
 STOPSIGNAL SIGTERM
@@ -88,18 +66,3 @@ CMD ["/run_app_docker.sh"]
 #  a higher value without increasing the startup time
 HEALTHCHECK --interval=30s --timeout=3s \
   CMD /healthcheck.sh
-
-
-## OLD BELOW
-# baseapp forces us to create the frontend directory of app will not load
-#RUN apk add --no-cache bash python3 curl python3-dev build-base linux-headers pcre-dev libffi-dev && \
-#    python3 -m ensurepip && \
-#    rm -r /usr/lib/python*/ensurepip && \
-#    pip3 install --upgrade pip setuptools && \
-#    rm -r /root/.cache && \
-#    pip3 install --upgrade pip && \
-#    mkdir ${APP_DIR} && \
-#    mkdir ${APIAPP_FRONTEND_FRONTEND} && \
-#    mkdir /var/log/uwsgi && \
-#    pip3 install uwsgi && \
-#    wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -O /rds-combined-ca-bundle.pem

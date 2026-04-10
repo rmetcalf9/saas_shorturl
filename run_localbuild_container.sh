@@ -57,6 +57,9 @@ docker service create --name ${RJM_RUNNING_SERVICE_NAME} \
 -e APIAPP_FRONTENDURL=${EXTURL}:${CONTAINER_EXTPORT80}/public/web/frontend \
 -e APIAPP_DEFAULTMASTERTENANTJWTCOLLECTIONALLOWEDORIGINFIELD="http://localhost" \
 -e APIAPP_COMMON_ACCESSCONTROLALLOWORIGIN="http://localhost" \
+-e APIAPP_REDIRECTPREFIX="http://rjmd.uk" \
+-e APIAPP_URLEXPIREDAYS=366 \
+-e APIAPP_DESTWHITELIST="{\"challengeapp\":[\"https://challengeswipe.com/#/challengeapp/\"],\"challengeappstage\":[\"https://challengewsipe.com/#/challengeappstage/\"]}" \
 -e APIAPP_OBJECTSTORECONFIG="{\"Type\": \"SimpleFileStore\",\"BaseLocation\": \"/ext_volume/services/objectstoredata\"}" \
 --publish ${CONTAINER_EXTPORT80}:80 \
 ${RJM_IMAGE_TO_RUN}
